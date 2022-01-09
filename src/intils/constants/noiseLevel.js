@@ -1,0 +1,98 @@
+export const noiseLevel = [
+  {
+    label: "ПС-20",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 31,
+      secondLevel: 24,
+      thirdLevel: 20,
+      fourthLevel: 17,
+      fifthLevel: 14,
+      sixthLevel: 13,
+    },
+  },
+  {
+    label: "ПС-25",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 35,
+      secondLevel: 29,
+      thirdLevel: 25,
+      fourthLevel: 22,
+      fifthLevel: 20,
+      sixthLevel: 18,
+    },
+  },
+  {
+    label: "ПС-30",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 40,
+      secondLevel: 34,
+      thirdLevel: 30,
+      fourthLevel: 27,
+      fifthLevel: 25,
+      sixthLevel: 23,
+    },
+  },
+  {
+    label: "ПС-35",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 45,
+      secondLevel: 39,
+      thirdLevel: 35,
+      fourthLevel: 32,
+      fifthLevel: 30,
+      sixthLevel: 28,
+    },
+  },
+  {
+    label: "ПС-40",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 49,
+      secondLevel: 44,
+      thirdLevel: 40,
+      fourthLevel: 37,
+      fifthLevel: 35,
+      sixthLevel: 33,
+    },
+  },
+  {
+    label: "ПС-45",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 54,
+      secondLevel: 49,
+      thirdLevel: 45,
+      fourthLevel: 42,
+      fifthLevel: 40,
+      sixthLevel: 38,
+    },
+  },
+  {
+    label: "ПС-50",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 59,
+      secondLevel: 54,
+      thirdLevel: 50,
+      fourthLevel: 47,
+      fifthLevel: 44,
+      sixthLevel: 33,
+    },
+  },
+  {
+    label: "ПС-55",
+    speechLevel: 67.9,
+    value: {
+      firstLevel: 63,
+      secondLevel: 58,
+      thirdLevel: 55,
+      fourthLevel: 52,
+      fifthLevel: 50,
+      sixthLevel: 49,
+    },
+  },
+];

@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { VolumeLevel } from "./components/VolumeLevel/VolumeLevel";
+import { SoundCoefficient } from "./components/SoundCoefficient/SoundCoefficient";
+import { HeteroSoundCoefficient } from "./components/HeteroSoundCoefficient/HeteroSoundCoefficient";
+import { NoiseLevel } from "./components/NoiseLevel/NoiseLevel";
+import { SettlementPanel } from "./components/SettlementPanel/SettlementPanel";
 
 function App() {
+  const [isShowHetero, setShowHetero] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ fontSize: 12, fontFamily: "Roboto" }}>
+      <VolumeLevel />
+      <SoundCoefficient />
+      <NoiseLevel />
+      <SettlementPanel />
     </div>
   );
 }
