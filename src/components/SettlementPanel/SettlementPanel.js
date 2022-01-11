@@ -39,6 +39,7 @@ const useStyles = makeStyles({
 
 export function SettlementPanel() {
   const classes = useStyles();
+
   return (
     <Grid container className={classes.container}>
       <Grid item xs={12} className={classes.settings}>

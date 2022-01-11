@@ -15,7 +15,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 const useStyles = makeStyles({
   soundCoefficient: {
     borderRadius: 7,
-    marginTop: "10px",
     boxShadow: "10px 1px 10px 1px rgba(34, 60, 80, 0.2)",
   },
   volumeSettings: {
@@ -40,11 +39,15 @@ const useStyles = makeStyles({
     paddingLeft: "10px",
   },
   surDensityText: {
+    margin: 0,
     display: "inline-block",
     paddingRight: 10,
   },
   surDensityContainer: {
     paddingTop: 20,
+    paddingBottom: 20,
+    display: "flex",
+    alignItems: "flex-end",
   },
   flexItem: {
     display: "flex",
@@ -64,7 +67,7 @@ export function HeteroSoundCoefficient() {
   const classes = useStyles();
   return (
     <Grid className={classes.soundCoefficient}>
-      <Header text="Коэффициент звукопоглощение однородной перегородки" />
+      <Header text="Коэффициент звукопоглощение неоднородной перегородки" />
       <Grid item xs={12} className={classes.volumeSettings}>
         <Grid container>
           <Grid item xs={4} className={classes.volumeMode}>
@@ -169,8 +172,20 @@ export function HeteroSoundCoefficient() {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} className={classes.flexItem}>
                 <p className={classes.surDensityText}>Q</p>
+                <TextField
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">дБ</InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  className={classes.textFieldStyles}
+                />
+                <p className={classes.surDensityText}>
+                  Площадь перегородки в % от общей площади стены
+                </p>
                 <TextField
                   InputProps={{
                     endAdornment: (

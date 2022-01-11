@@ -59,17 +59,34 @@ const useStyles = makeStyles({
       fontSize: 12,
     },
   },
-  showPanel: {
+  showCheckBox: {
     display: "flex !important",
     justifyContent: "flex-end",
     "& .MuiTypography-root": {
       fontSize: 12,
     },
   },
+  showSettingsButton: {
+    marginTop: 0,
+    fontSize: 10,
+    paddingRight: 20,
+    color: "#3f51b5",
+    cursor: "pointer",
+  },
 });
 
-export function SoundCoefficient() {
+export function SoundCoefficient({
+  isShowHetero,
+  setShowHetero,
+  setOpenModal,
+}) {
   const classes = useStyles();
+
+  const handleChangeShowHetero = () => {
+    setShowHetero((prevState) => !prevState);
+    setOpenModal(true);
+  };
+
   return (
     <Grid className={classes.soundCoefficient}>
       <Header text="Коэффициент звукопоглощение однородной перегородки" />
@@ -193,11 +210,28 @@ export function SoundCoefficient() {
           </Grid>
         </Grid>
       </Grid>
-      <FormControlLabel
-        className={classes.showPanel}
-        control={<Checkbox />}
-        label="Имеется неоднородная перегородка"
-      />
+      <Grid container justifyContent="flex-end">
+        <Grid item xs={12}>
+          <FormControlLabel
+            className={classes.showCheckBox}
+            control={
+              <Checkbox
+                value={isShowHetero}
+                onChange={handleChangeShowHetero}
+              />
+            }
+            label="Имеется неоднородная перегородка"
+          />
+        </Grid>
+        {isShowHetero && (
+          <p
+            className={classes.showSettingsButton}
+            onClick={() => setOpenModal(true)}
+          >
+            Открыть настройки неоднородной перегородки
+          </p>
+        )}
+      </Grid>
     </Grid>
   );
 }
