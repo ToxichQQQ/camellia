@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 import { Header } from "../common/Header";
@@ -32,6 +32,7 @@ const useStyles = makeStyles({
     },
   },
   select: {
+    pointerEvents: (props) => props.settingsType !== "material" && "none",
     fontSize: "12px !important",
   },
   option: {
@@ -79,12 +80,24 @@ export function SoundCoefficient({
   isShowHetero,
   setShowHetero,
   setOpenModal,
+  soundValue,
+  setSoundValue,
 }) {
-  const classes = useStyles();
+  const [settingsType, setSettingsType] = useState("material");
 
+  const classes = useStyles({ settingsType });
+
+  const handleTypeChange = (value) => {
+    if (value !== "material") {
+      setSelectValue(null);
+    }
+    setSettingsType(value);
+  };
   const handleChangeShowHetero = () => {
     setShowHetero((prevState) => !prevState);
-    setOpenModal(true);
+    if (!isShowHetero) {
+      setOpenModal(true);
+    }
   };
 
   return (
@@ -97,27 +110,29 @@ export function SoundCoefficient({
               <RadioGroup
                 aria-label="volumeMode"
                 name="controlled-radio-buttons-group"
+                value={settingsType}
+                onChange={(e) => handleTypeChange(e.target.value)}
               >
                 <FormControlLabel
                   className={classes.volumeRadioButton}
-                  value="female"
+                  value="material"
                   control={<Radio />}
                   label="Материал"
                 />
                 <FormControlLabel
-                  value="male"
+                  value="monoBlock"
                   className={classes.volumeRadioButton}
                   control={<Radio />}
                   label="Монолитная перегородка"
                 />
                 <FormControlLabel
-                  value="mal"
+                  value="doubleBlock"
                   className={classes.volumeRadioButton}
                   control={<Radio />}
                   label="Двойная перегородка"
                 />
                 <FormControlLabel
-                  value="mle"
+                  value="exactValue"
                   className={classes.volumeRadioButton}
                   control={<Radio />}
                   label="Точное значение"
@@ -128,7 +143,12 @@ export function SoundCoefficient({
           <Grid item xs={8} className={classes.soundSettings}>
             <Grid container>
               <Grid item xs={12}>
-                <Select fullWidth variant="standard" className={classes.select}>
+                <Select
+                  fullWidth
+                  variant="standard"
+                  className={classes.select}
+                  onChange={(e) => setSoundValue(e.target.value)}
+                >
                   {homoPartition.map((option, index) => (
                     <MenuItem
                       key={index}
@@ -147,6 +167,7 @@ export function SoundCoefficient({
                 <TextField
                   variant="standard"
                   className={classes.textFieldStyles}
+                  disabled={settingsType !== "monoBlock"}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">кг/м2</InputAdornment>
@@ -163,6 +184,7 @@ export function SoundCoefficient({
                     <TextField
                       variant="standard"
                       className={classes.textFieldStyles}
+                      disabled={settingsType !== "doubleBlock"}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">мм</InputAdornment>
@@ -177,6 +199,7 @@ export function SoundCoefficient({
                   >
                     <p className={classes.surDensityText}>Р1</p>
                     <TextField
+                      disabled={settingsType !== "doubleBlock"}
                       variant="standard"
                       className={classes.textFieldStyles}
                     />
@@ -188,6 +211,7 @@ export function SoundCoefficient({
                   >
                     <p className={classes.surDensityText}>Р2</p>
                     <TextField
+                      disabled={settingsType !== "doubleBlock"}
                       variant="standard"
                       className={classes.textFieldStyles}
                     />
@@ -202,6 +226,7 @@ export function SoundCoefficient({
                       <InputAdornment position="end">дБ</InputAdornment>
                     ),
                   }}
+                  disabled={settingsType !== "exactValue"}
                   variant="standard"
                   className={classes.textFieldStyles}
                 />

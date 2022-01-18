@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 import FormControl from "@mui/material/FormControl";
@@ -47,8 +47,31 @@ const useStyles = makeStyles({
   },
 });
 
-export function VolumeLevel() {
+export function VolumeLevel({ volumeLevelSettings, setVolumeLevelSettings }) {
   const classes = useStyles();
+
+  const [settingsType, setSettingsType] = useState("standardLevel");
+  const [disableFields, setDisableFields] = useState(true);
+  const [initialValues, setInitialValues] = useState(volumeLevelSettings);
+
+  useEffect(() => {
+    if (settingsType === "handleSettings") {
+      setDisableFields(false);
+    } else {
+      setDisableFields(true);
+      setVolumeLevelSettings(initialValues);
+    }
+  }, [settingsType]);
+
+  const handleVolumeLevel = (val, position) => {
+    setVolumeLevelSettings((prevState) =>
+      prevState.map((item, index) => (index === position ? (item = val) : item))
+    );
+  };
+
+  console.log(volumeLevelSettings);
+  console.log(initialValues);
+
   return (
     <Grid container className={classes.volumeLevelContainer}>
       <Header text="Уровень речи в контролируемом помещении" />
@@ -59,15 +82,17 @@ export function VolumeLevel() {
               <RadioGroup
                 aria-label="volumeMode"
                 name="controlled-radio-buttons-group"
+                value={settingsType}
+                onChange={(e) => setSettingsType(e.target.value)}
               >
                 <FormControlLabel
                   className={classes.volumeRadioButton}
-                  value="female"
+                  value={"handleSettings"}
                   label="Ручная настройка"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value="male"
+                  value={"standardLevel"}
                   className={classes.volumeRadioButton}
                   control={<Radio />}
                   label="Стандартный уровень речи"
@@ -86,6 +111,9 @@ export function VolumeLevel() {
                     label="250 Гц"
                     className={classes.textFieldStyles}
                     size="small"
+                    value={volumeLevelSettings[0]}
+                    onChange={(e) => handleVolumeLevel(e.target.value, 0)}
+                    disabled={disableFields}
                     variant="standard"
                     InputLabelProps={{
                       shrink: true,
@@ -97,6 +125,9 @@ export function VolumeLevel() {
                     label="500 Гц"
                     className={classes.textFieldStyles}
                     size="small"
+                    value={volumeLevelSettings[1]}
+                    onChange={(e) => handleVolumeLevel(e.target.value, 1)}
+                    disabled={disableFields}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -107,6 +138,9 @@ export function VolumeLevel() {
                   <TextField
                     variant="standard"
                     label="1000 Гц"
+                    disabled={disableFields}
+                    value={volumeLevelSettings[2]}
+                    onChange={(e) => handleVolumeLevel(e.target.value, 2)}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -118,6 +152,9 @@ export function VolumeLevel() {
                   <TextField
                     size="small"
                     variant="standard"
+                    disabled={disableFields}
+                    value={volumeLevelSettings[3]}
+                    onChange={(e) => handleVolumeLevel(e.target.value, 3)}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -130,6 +167,9 @@ export function VolumeLevel() {
                     size="small"
                     variant="standard"
                     label="4000 Гц"
+                    disabled={disableFields}
+                    value={volumeLevelSettings[4]}
+                    onChange={(e) => handleVolumeLevel(e.target.value, 4)}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -144,6 +184,9 @@ export function VolumeLevel() {
                     }}
                     variant="standard"
                     label="6000 Гц"
+                    value={volumeLevelSettings[5]}
+                    onChange={(e) => handleVolumeLevel(e.target.value, 5)}
+                    disabled={disableFields}
                     className={classes.textFieldStyles}
                   />
                 </Grid>

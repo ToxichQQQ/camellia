@@ -10,17 +10,27 @@ function App() {
   const [isShowHetero, setShowHetero] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
+  const [volumeLevelSettings, setVolumeLevelSettings] = useState([
+    67.9, 66.9, 61.5, 57.0, 53.0, 48.5,
+  ]);
+  const [soundValue, setSoundValue] = useState(null);
+
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
   return (
     <div style={{ fontSize: 12, fontFamily: "Roboto" }}>
-      <VolumeLevel />
+      <VolumeLevel
+        volumeLevelSettings={volumeLevelSettings}
+        setVolumeLevelSettings={setVolumeLevelSettings}
+      />
       <SoundCoefficient
         isShowHetero={isShowHetero}
         setShowHetero={setShowHetero}
         setOpenModal={setOpenModal}
+        soundValue={soundValue}
+        setSoundValue={setSoundValue}
       />
       <NoiseLevel />
       <SettlementPanel />
