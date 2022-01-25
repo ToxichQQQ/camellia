@@ -13,6 +13,11 @@ function App() {
   const [volumeLevelSettings, setVolumeLevelSettings] = useState([
     67.9, 66.9, 61.5, 57.0, 53.0, 48.5,
   ]);
+  const [noiseLevelSettings, setNoiseLevelSettings] = useState([
+    67.9, 66.9, 61.5, 57.0, 53.0, 48.5,
+  ]);
+  const [soundCoef, setSoundCoef] = useState(null);
+  const [heteroCoef, setHeteroCoef] = useState(null);
   const [soundValue, setSoundValue] = useState(null);
 
   const handleCloseModal = () => {
@@ -32,7 +37,10 @@ function App() {
         soundValue={soundValue}
         setSoundValue={setSoundValue}
       />
-      <NoiseLevel />
+      <NoiseLevel
+        noiseLevel={noiseLevelSettings}
+        setNoiseLevel={setNoiseLevelSettings}
+      />
       <SettlementPanel />
       <Dialog open={openModal} onClose={handleCloseModal} maxWidth={"100vw"}>
         <HeteroSoundCoefficient />

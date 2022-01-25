@@ -89,7 +89,7 @@ export function SoundCoefficient({
 
   const handleTypeChange = (value) => {
     if (value !== "material") {
-      setSelectValue(null);
+      setSoundValue(null);
     }
     setSettingsType(value);
   };
@@ -221,6 +221,8 @@ export function SoundCoefficient({
               <Grid item xs={6}>
                 <p className={classes.surDensityText}>Q</p>
                 <TextField
+                  value={soundValue}
+                  onChange={(e) => setSoundValue(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">дБ</InputAdornment>

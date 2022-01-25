@@ -69,9 +69,6 @@ export function VolumeLevel({ volumeLevelSettings, setVolumeLevelSettings }) {
     );
   };
 
-  console.log(volumeLevelSettings);
-  console.log(initialValues);
-
   return (
     <Grid container className={classes.volumeLevelContainer}>
       <Header text="Уровень речи в контролируемом помещении" />

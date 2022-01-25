@@ -2,7 +2,9 @@
   "name": "camellia",
   "version": "0.1.0",
   "private": true,
-  "main": "./electron/index.js",
+  "productName": "Camellia",
+  "main": "electron/index.js",
+  "homepage": "./",
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
@@ -12,6 +14,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "electron-is-dev": "^2.0.0",
+    "electron-webpack": "^2.8.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -20,16 +23,28 @@
   "scripts": {
     "start": "react-scripts start",
     "electron": "electron .",
+    "compile": "electron-webpack",
     "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-build": "npm build && electron-builder -c.extraMetadata.main=electron/index.js",
+    "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\""
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "electronWebpack": {
+    "commonSourceDirectory": "common",
+    "main": {
+      "sourceDirectory": "src"
+    },
+    "renderer": {
+      "sourceDirectory": null
+    }
   },
   "browserslist": {
     "production": [
@@ -44,7 +59,21 @@
     ]
   },
   "devDependencies": {
-    "electron": "^16.0.5",
-    "prettier": "2.5.1"
+    "electron": "^16.0.7",
+    "electron-packager": "^15.4.0",
+    "prettier": "2.5.1",
+    "electron-builder": "^22.14.5"
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.example.electron-cra",
+    "files": [
+      "dist/**/*",
+      "package.json",
+      "./electron/index.js"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   }
 }

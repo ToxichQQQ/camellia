@@ -61,6 +61,11 @@ const useStyles = makeStyles({
       fontSize: 12,
     },
   },
+  additionalSettings: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "10px !important",
+  },
 });
 
 export function HeteroSoundCoefficient() {
@@ -172,29 +177,32 @@ export function HeteroSoundCoefficient() {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} className={classes.flexItem}>
-                <p className={classes.surDensityText}>Q</p>
-                <TextField
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">дБ</InputAdornment>
-                    ),
-                  }}
-                  variant="standard"
-                  className={classes.textFieldStyles}
-                />
-                <p className={classes.surDensityText}>
-                  Площадь перегородки в % от общей площади стены
-                </p>
-                <TextField
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">дБ</InputAdornment>
-                    ),
-                  }}
-                  variant="standard"
-                  className={classes.textFieldStyles}
-                />
+              <Grid
+                item
+                xs={12}
+                className={`${classes.flexItem} ${classes.additionalSettings}`}
+              >
+                <span>
+                  <p className={classes.surDensityText}>Q</p>
+                  <TextField
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">дБ</InputAdornment>
+                      ),
+                    }}
+                    variant="standard"
+                    className={classes.textFieldStyles}
+                  />
+                </span>
+                <span>
+                  <p className={classes.surDensityText}>
+                    Площадь перегородки в % от общей площади стены
+                  </p>
+                  <TextField
+                    variant="standard"
+                    className={classes.textFieldStyles}
+                  />
+                </span>
               </Grid>
             </Grid>
           </Grid>
