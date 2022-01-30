@@ -28,8 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-build": "npm build && electron-builder -c.extraMetadata.main=electron/index.js",
-    "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\""
+    "build-electron": "mkdir build/electron && robocopy electron build/electron /S",
+    "package": "electron-builder build --win -c.extraMetadata.main=build/electron/index.js --publish never"
   },
   "eslintConfig": {
     "extends": [
@@ -60,20 +60,20 @@
   },
   "devDependencies": {
     "electron": "^16.0.7",
+    "electron-builder": "^22.14.5",
     "electron-packager": "^15.4.0",
-    "prettier": "2.5.1",
-    "electron-builder": "^22.14.5"
+    "prettier": "2.5.1"
   },
   "build": {
-    "extends": null,
-    "appId": "com.example.electron-cra",
     "files": [
-      "dist/**/*",
-      "package.json",
-      "./electron/index.js"
+      "build/**/*",
+      "node_modules/**/*"
     ],
-    "directories": {
-      "buildResources": "assets"
+    "publish": {
+      "provider": "github",
+      "repo": "electron-cra-example",
+      "owner": "johndyer24"
     }
   }
 }
+

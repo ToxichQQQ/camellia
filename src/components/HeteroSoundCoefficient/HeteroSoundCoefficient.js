@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 import { Header } from "../common/Header";
@@ -31,6 +31,7 @@ const useStyles = makeStyles({
   },
   select: {
     fontSize: "12px !important",
+    pointerEvents: (props) => props.settingsType !== "material" && "none",
   },
   option: {
     fontSize: "12px !important",
@@ -68,8 +69,38 @@ const useStyles = makeStyles({
   },
 });
 
-export function HeteroSoundCoefficient() {
-  const classes = useStyles();
+export function HeteroSoundCoefficient({ heteroCoef, setHeteroCoef }) {
+  const [settingsType, setSettingsType] = useState("material");
+  const [firstValue, setFirstValue] = useState("");
+  const [secondValue, setSecondValue] = useState("");
+  const [highDensity, setHighDensity] = useState("");
+  const classes = useStyles({ settingsType });
+
+  const handleCreateNewValue = (val) => {
+    setHighDensity(val);
+    let newValue = null;
+    if (val > 200) {
+      newValue = 14.5 * Math.log10(val) + 15;
+    } else {
+      newValue = 12.5 * Math.log10(val) + 14;
+    }
+    setHeteroCoef(Math.round(newValue));
+  };
+
+  const handleCreateNewValueBlock = () => {
+    if (settingsType === "doubleBlock" && firstValue && secondValue) {
+      const newValue = Number(firstValue) + Number(secondValue);
+      setHeteroCoef(newValue);
+    }
+  };
+
+  const handleTypeChange = (value) => {
+    if (value !== "material") {
+      setHeteroCoef(null);
+    }
+    setSettingsType(value);
+  };
+
   return (
     <Grid className={classes.soundCoefficient}>
       <Header text="Коэффициент звукопоглощение неоднородной перегородки" />
@@ -80,27 +111,29 @@ export function HeteroSoundCoefficient() {
               <RadioGroup
                 aria-label="volumeMode"
                 name="controlled-radio-buttons-group"
+                onChange={(e) => handleTypeChange(e.target.value)}
+                value={settingsType}
               >
                 <FormControlLabel
                   className={classes.volumeRadioButton}
-                  value="female"
+                  value="material"
                   control={<Radio />}
                   label="Материал"
                 />
                 <FormControlLabel
-                  value="male"
+                  value="monoBlock"
                   className={classes.volumeRadioButton}
                   control={<Radio />}
                   label="Монолитная перегородка"
                 />
                 <FormControlLabel
-                  value="mal"
+                  value="doubleBlock"
                   className={classes.volumeRadioButton}
                   control={<Radio />}
                   label="Двойная перегородка"
                 />
                 <FormControlLabel
-                  value="mle"
+                  value="exactValue"
                   className={classes.volumeRadioButton}
                   control={<Radio />}
                   label="Точное значение"
@@ -111,7 +144,12 @@ export function HeteroSoundCoefficient() {
           <Grid item xs={8} className={classes.soundSettings}>
             <Grid container>
               <Grid item xs={12}>
-                <Select fullWidth variant="standard" className={classes.select}>
+                <Select
+                  fullWidth
+                  variant="standard"
+                  className={classes.select}
+                  onChange={(e) => setHeteroCoef(e.target.value)}
+                >
                   {homoPartition.map((option, index) => (
                     <MenuItem
                       key={index}
@@ -129,7 +167,13 @@ export function HeteroSoundCoefficient() {
                 </p>
                 <TextField
                   variant="standard"
+                  disabled={settingsType !== "monoBlock"}
                   className={classes.textFieldStyles}
+                  value={highDensity}
+                  onChange={(e) => {
+                    const newValue = e.target.value.replace(/\D/g, "");
+                    handleCreateNewValue(newValue);
+                  }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">кг/м2</InputAdornment>
@@ -146,6 +190,7 @@ export function HeteroSoundCoefficient() {
                     <TextField
                       variant="standard"
                       className={classes.textFieldStyles}
+                      disabled={true}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">мм</InputAdornment>
@@ -160,8 +205,14 @@ export function HeteroSoundCoefficient() {
                   >
                     <p className={classes.surDensityText}>Р1</p>
                     <TextField
+                      onChange={(e) => {
+                        const newValue = e.target.value.replace(/\D/g, "");
+                        setFirstValue(newValue);
+                      }}
                       variant="standard"
+                      disabled={settingsType !== "doubleBlock"}
                       className={classes.textFieldStyles}
+                      value={firstValue}
                     />
                   </Grid>
                   <Grid
@@ -171,8 +222,14 @@ export function HeteroSoundCoefficient() {
                   >
                     <p className={classes.surDensityText}>Р2</p>
                     <TextField
+                      disabled={settingsType !== "doubleBlock"}
                       variant="standard"
+                      onChange={(e) => {
+                        const newValue = e.target.value.replace(/\D/g, "");
+                        setSecondValue(newValue);
+                      }}
                       className={classes.textFieldStyles}
+                      value={secondValue}
                     />
                   </Grid>
                 </Grid>
@@ -185,6 +242,12 @@ export function HeteroSoundCoefficient() {
                 <span>
                   <p className={classes.surDensityText}>Q</p>
                   <TextField
+                    value={heteroCoef}
+                    onChange={(e) => {
+                      const newValue = e.target.value.replace(/\D/g, "");
+                      setHeteroCoef(newValue);
+                    }}
+                    disabled={settingsType !== "exactValue"}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">дБ</InputAdornment>
@@ -199,6 +262,7 @@ export function HeteroSoundCoefficient() {
                     Площадь перегородки в % от общей площади стены
                   </p>
                   <TextField
+                    disabled={settingsType !== "exactValue"}
                     variant="standard"
                     className={classes.textFieldStyles}
                   />

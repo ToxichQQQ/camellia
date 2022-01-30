@@ -68,8 +68,11 @@ export function NoiseLevel({ noiseLevel, setNoiseLevel }) {
   const classes = useStyles({ settingsType });
 
   const handleNoiseLevel = (val, position) => {
+    const newValue = val.replace(/\D/g, "");
     setNoiseLevel((prevState) =>
-      prevState.map((item, index) => (index === position ? (item = val) : item))
+      prevState.map((item, index) =>
+        index === position ? (item = newValue) : item
+      )
     );
   };
 

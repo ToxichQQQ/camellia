@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 import { Header } from "../common/Header";
@@ -50,7 +50,7 @@ const useStyles = makeStyles({
   },
   flexItem: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   square: {
     paddingLeft: 5,
@@ -84,8 +84,28 @@ export function SoundCoefficient({
   setSoundValue,
 }) {
   const [settingsType, setSettingsType] = useState("material");
-
+  const [firstValue, setFirstValue] = useState("");
+  const [secondValue, setSecondValue] = useState("");
+  const [highDensity, setHighDensity] = useState("");
   const classes = useStyles({ settingsType });
+
+  const handleCreateNewValue = (val) => {
+    setHighDensity(val);
+    let newValue = null;
+    if (val > 200) {
+      newValue = 14.5 * Math.log10(val) + 15;
+    } else {
+      newValue = 12.5 * Math.log10(val) + 14;
+    }
+    setSoundValue(Math.round(newValue));
+  };
+
+  const handleCreateNewValueBlock = () => {
+    if (settingsType === "doubleBlock" && firstValue && secondValue) {
+      const newValue = Number(firstValue) + Number(secondValue);
+      setSoundValue(newValue);
+    }
+  };
 
   const handleTypeChange = (value) => {
     if (value !== "material") {
@@ -100,6 +120,10 @@ export function SoundCoefficient({
     }
   };
 
+  useEffect(() => {
+    handleCreateNewValueBlock();
+  }, [firstValue, secondValue, settingsType]);
+
   return (
     <Grid className={classes.soundCoefficient}>
       <Header text="Коэффициент звукопоглощение однородной перегородки" />
@@ -111,7 +135,10 @@ export function SoundCoefficient({
                 aria-label="volumeMode"
                 name="controlled-radio-buttons-group"
                 value={settingsType}
-                onChange={(e) => handleTypeChange(e.target.value)}
+                onChange={(e) => {
+                  setSoundValue(null);
+                  handleTypeChange(e.target.value);
+                }}
               >
                 <FormControlLabel
                   className={classes.volumeRadioButton}
@@ -167,6 +194,11 @@ export function SoundCoefficient({
                 <TextField
                   variant="standard"
                   className={classes.textFieldStyles}
+                  value={highDensity}
+                  onChange={(e) => {
+                    const newValue = e.target.value.replace(/\D/g, "");
+                    handleCreateNewValue(newValue);
+                  }}
                   disabled={settingsType !== "monoBlock"}
                   InputProps={{
                     endAdornment: (
@@ -184,7 +216,7 @@ export function SoundCoefficient({
                     <TextField
                       variant="standard"
                       className={classes.textFieldStyles}
-                      disabled={settingsType !== "doubleBlock"}
+                      disabled={true}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">мм</InputAdornment>
@@ -200,7 +232,12 @@ export function SoundCoefficient({
                     <p className={classes.surDensityText}>Р1</p>
                     <TextField
                       disabled={settingsType !== "doubleBlock"}
+                      onChange={(e) => {
+                        const newValue = e.target.value.replace(/\D/g, "");
+                        setFirstValue(newValue);
+                      }}
                       variant="standard"
+                      value={firstValue}
                       className={classes.textFieldStyles}
                     />
                   </Grid>
@@ -213,6 +250,11 @@ export function SoundCoefficient({
                     <TextField
                       disabled={settingsType !== "doubleBlock"}
                       variant="standard"
+                      value={secondValue}
+                      onChange={(e) => {
+                        const newValue = e.target.value.replace(/\D/g, "");
+                        setSecondValue(newValue);
+                      }}
                       className={classes.textFieldStyles}
                     />
                   </Grid>
@@ -222,7 +264,10 @@ export function SoundCoefficient({
                 <p className={classes.surDensityText}>Q</p>
                 <TextField
                   value={soundValue}
-                  onChange={(e) => setSoundValue(e.target.value)}
+                  onChange={(e) => {
+                    const newValue = e.target.value.replace(/\D/g, "");
+                    setSoundValue(newValue);
+                  }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">дБ</InputAdornment>

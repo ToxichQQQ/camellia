@@ -64,8 +64,11 @@ export function VolumeLevel({ volumeLevelSettings, setVolumeLevelSettings }) {
   }, [settingsType]);
 
   const handleVolumeLevel = (val, position) => {
+    const newValue = val.replace(/\D/g, "");
     setVolumeLevelSettings((prevState) =>
-      prevState.map((item, index) => (index === position ? (item = val) : item))
+      prevState.map((item, index) =>
+        index === position ? (item = newValue) : item
+      )
     );
   };
 
