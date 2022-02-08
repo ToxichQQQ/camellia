@@ -69,7 +69,12 @@ const useStyles = makeStyles({
   },
 });
 
-export function HeteroSoundCoefficient({ heteroCoef, setHeteroCoef }) {
+export function HeteroSoundCoefficient({
+  heteroCoef,
+  setHeteroCoef,
+  procent,
+  setProcent,
+}) {
   const [settingsType, setSettingsType] = useState("material");
   const [firstValue, setFirstValue] = useState("");
   const [secondValue, setSecondValue] = useState("");
@@ -156,7 +161,7 @@ export function HeteroSoundCoefficient({ heteroCoef, setHeteroCoef }) {
                       value={option.value}
                       className={classes.option}
                     >
-                      {`${option.label}, толщина ${option.width} мм`}
+                      {`${option.label}, ${option.width}`}
                     </MenuItem>
                   ))}
                 </Select>
@@ -262,8 +267,12 @@ export function HeteroSoundCoefficient({ heteroCoef, setHeteroCoef }) {
                     Площадь перегородки в % от общей площади стены
                   </p>
                   <TextField
-                    disabled={settingsType !== "exactValue"}
                     variant="standard"
+                    value={procent}
+                    onChange={(e) => {
+                      const newValue = e.target.value.replace(/\D/g, "");
+                      setProcent(newValue);
+                    }}
                     className={classes.textFieldStyles}
                   />
                 </span>

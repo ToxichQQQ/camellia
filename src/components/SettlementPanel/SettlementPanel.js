@@ -11,7 +11,6 @@ import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import { noiseLevelArr } from "../../intils/constants/noiseLevel";
 
 const useStyles = makeStyles({
   container: {
@@ -50,6 +49,7 @@ const useStyles = makeStyles({
 
 export function SettlementPanel({ voiceLevel, handleGetNewValues }) {
   const classes = useStyles();
+  const ids = ["1"];
   const levelSettings = [
     {
       title: "Смысл не понятен",
@@ -108,7 +108,7 @@ export function SettlementPanel({ voiceLevel, handleGetNewValues }) {
               </Grid>
               <Grid item xs={12}>
                 <Button className={classes.button} variant="contained">
-                  Сброс
+                  Сохранить
                 </Button>
               </Grid>
             </Grid>

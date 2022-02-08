@@ -182,7 +182,7 @@ export function SoundCoefficient({
                       value={option.value}
                       className={classes.option}
                     >
-                      {`${option.label}, толщина ${option.width} мм`}
+                      {`${option.label}, ${option.width}`}
                     </MenuItem>
                   ))}
                 </Select>

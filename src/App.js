@@ -19,6 +19,7 @@ function App() {
   ]);
   const [soundCoef, setSoundCoef] = useState(null);
   const [heteroCoef, setHeteroCoef] = useState(null);
+  const [procent, setProcent] = useState(null);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -27,16 +28,26 @@ function App() {
   const handleGetNewValues = () => {
     let array = [null, null, null, null, null, null];
     let valuesArray = [null, null, null, null, null, null];
+    let preValue = Number(soundCoef);
+    let p = procent / 100;
+    if (isShowHetero) {
+      preValue = Math.round(
+        preValue -
+          10 *
+            Math.log10(
+              1 + p * (10 ** (0.1 * (preValue - Number(heteroCoef))) - 1)
+            )
+      );
+    }
     const arrLength = volumeLevelSettings.length;
     for (let i = 0; i < arrLength; i++) {
-      const newVal = Number(volumeLevelSettings[i]) + 6 - Number(soundCoef);
+      const newVal = Number(volumeLevelSettings[i]) + 6 - preValue;
       array[i] = newVal;
     }
     for (let i = 0; i < arrLength; i++) {
-      const value = Number(noiseLevelSettings[i]) - Number(array[i]);
+      const value = Number(array[i]) - Number(noiseLevelSettings[i]);
       valuesArray[i] = value;
     }
-
     setVoiceLevel(valuesArray);
   };
 
@@ -64,6 +75,8 @@ function App() {
       <Dialog open={openModal} onClose={handleCloseModal} maxWidth={"100vw"}>
         <HeteroSoundCoefficient
           heteroCoef={heteroCoef}
+          procent={procent}
+          setProcent={setProcent}
           setHeteroCoef={setHeteroCoef}
         />
       </Dialog>
